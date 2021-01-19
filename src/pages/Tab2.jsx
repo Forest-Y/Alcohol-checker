@@ -1,52 +1,82 @@
 import React, {useState}from 'react';
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import { trash, close, create } from 'ionicons/icons';
+import { trash, close, beer} from 'ionicons/icons';
 import './Tab2.css';
-import { convertCompilerOptionsFromJson } from 'typescript';
-/*
-import Input from "./Input"
-*/
+import "react-dom"
+import { useHistory } from "react-router";
 
 const Tab2 = (props) => {
   const [showActionSheet, setShowActionSheet] = useState(false)
   const [actionAlert, setActionAlert] = useState(false)
-  
+  const [key, setKey] = useState("")
   const handleClick =() => {
     setActionAlert(true)
-    console.log(actionAlert)
   }
-  console.log(props.data)
-  /*
-  const handleClick = () => {
-    console.log("OK")
+  const history = useHistory()
+
+  const deleteButton= (data) => {
+    setShowActionSheet(true)
+    console.log(data[0])
+    setKey(data[0])
+    console.log(key, data[0])
   }
-  */
+  const data2 = JSON.parse(localStorage.alcohol)
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-           <IonButton slot = "end"　onClick = {handleClick}>新しいドリンクセットの追加</IonButton>
+           <IonButton slot = "end"　onClick = {handleClick}>新規作成</IonButton>
           <IonTitle>ドリンクの追加</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <div>
-          {props.data != null &&
+        {data2.length !== 0 &&
           <div>
-            {props.data.map(data => {
+            {Object.entries(data2).map((data) => {
               return  (
-                <IonCard>
+                <div key = {data}>
+                <IonCard onClick = {() => deleteButton(data)}>
                   <IonCardHeader>
-                    <IonCardTitle>{data.alcohol}</IonCardTitle>
-                    <IonCardSubtitle>アルコール濃度 : {data.per} %　容量 : {data.amount} ml</IonCardSubtitle>
+                    <IonCardTitle >{data[1].name}</IonCardTitle>
+                    <IonCardSubtitle>アルコール濃度 : {data[1].per} %　容量 : {data[1].amount} ml</IonCardSubtitle>
                   </IonCardHeader>
-              </IonCard>
+                </IonCard>
+                </div>
               )
             })}
           </div>
-         }
-        </div>
+        }
+        
+        <IonActionSheet
+        isOpen = {showActionSheet}
+        onDidDismiss = {() => setShowActionSheet(false)}
+        buttons = {[{
+          text:"削除",
+          role:"destructive",
+          icon:trash,
+          handler:() => {
+           console.log("OK")
+          }
+        },{
+          text: "閉じる",
+          icon: close,
+          role:"cancel"
+        },
+        {
+          text:"飲む",
+          icon:beer,
+          handler:() => {
+            localStorage.gram = parseFloat(localStorage.gram) + data2[key].per / 100 * data2[key].amount
+            localStorage.nowGram = localStorage.gram
+            console.log(localStorage.gram)
+            localStorage.time = new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds()
+            localStorage.per = (localStorage.gram / (833 * localStorage.weight) * 100)
+            history.push("./home")
+          }
+
+        }]}
+        
+      ></IonActionSheet>
         <IonAlert 
           isOpen = {actionAlert}
           onDidDismiss = {() => setActionAlert(false)}
@@ -71,15 +101,14 @@ const Tab2 = (props) => {
           },{
               text:"追加",
               handler: data => {
-                const temp = props.data
-                temp.push({
-                  alcohol:data.drink,
-                  per: data.per,
-                  amount:data.amount
-                })
-                console.log(temp)
-                props.setData(temp)
-                localStorage.drink = JSON.stringify(temp)
+               console.log(data.drink + data.per + data.amount)
+               data2[data.drink + data.per + data.amount] = {
+                 name: data.drink,
+                 per: data.per,
+                 amount:data.amount
+               }
+               localStorage.alcohol = JSON.stringify(data2)
+               setShowActionSheet(false)
               }
             }
           ]}
