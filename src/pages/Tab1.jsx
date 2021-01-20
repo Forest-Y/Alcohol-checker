@@ -40,7 +40,7 @@ const Tab1 = () => {
       setGram(gram => localStorage.gram)
       setPer(per => localStorage.per)
     }, 1000);
-  }, [])
+  }, [minDisassenbly])
   return (
     <IonPage>
       <IonHeader>
