@@ -67,7 +67,6 @@ const Tab1 = () => {
             <IonItem>{now.getMonth() + 1}月{now.getDate()}日{now.getHours()}時{now.getMinutes()}分に0%になります。</IonItem>
           }
         </IonList>
-        <Speech text="アイウエオ" />
         <IonModal
           isOpen={showModal}
           onDidDismiss={() => setShowModal(false)}>
