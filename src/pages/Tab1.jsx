@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { IonButtons, IonIcon, IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonModal } from '@ionic/react';
 import './Tab1.css';
 import { helpCircleOutline } from 'ionicons/icons';
-import Speech from "react-speech"
 import judgeState from "../components/judgeState"
 import Explanation from "../components/explanation"
 const Tab1 = () => {
