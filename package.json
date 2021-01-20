@@ -1,5 +1,5 @@
 {
-  "name": "alcohol",
+  "name": "Alcohol-checker",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -50,13 +50,6 @@
   "devDependencies": {
     "@capacitor/cli": "2.4.2",
     "@ionic/lab": "3.2.10"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Forest-Y/Alcohol-checker.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Forest-Y/Alcohol-checker/issues"
   },
   "description": "An Ionic project"
 }
