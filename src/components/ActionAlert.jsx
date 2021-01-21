@@ -1,8 +1,10 @@
 import React from 'react';
 import { IonAlert } from '@ionic/react';
+import searchData from "./searchData"
 import "react-dom"
 
 const ActionAlert = (props) => {
+    const allData = JSON.parse(localStorage.alcohol)
     return (
         <IonAlert
             isOpen={props.actionAlert}
@@ -28,13 +30,13 @@ const ActionAlert = (props) => {
                 }, {
                     text: "追加",
                     handler: drinkData => {
-                        console.log(drinkData.drink + drinkData.per + drinkData.amount)
-                        props.data[drinkData.drink + drinkData.per + drinkData.amount] = {
+                        allData[drinkData.drink + drinkData.per + drinkData.amount] = {
                             name: drinkData.drink,
                             per: drinkData.per,
                             amount: drinkData.amount
                         }
-                        localStorage.alcohol = JSON.stringify(props.data)
+                        localStorage.alcohol = JSON.stringify(allData)
+                        searchData(allData, props.setData)
                         props.setActionAlert(false)
                     }
                 }

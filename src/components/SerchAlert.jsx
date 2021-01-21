@@ -3,10 +3,12 @@ import { IonAlert　} from '@ionic/react';
 //import { useSpeechRecognition } from "react-speech-recognition"
 import "react-dom"
 import searchData from './searchData';
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition"
 
 const SerchAlert = (props) => {
     //const { transcript, resetTranscript } = useSpeechRecognition()
     const allData = JSON.parse(localStorage.alcohol)
+    const { transcript } = useSpeechRecognition()
     return (
         <IonAlert
             isOpen={props.searchAlert}
@@ -23,7 +25,8 @@ const SerchAlert = (props) => {
                     searchData(allData, props.setData)
                     props.setSearchAlert(false)
                 }
-            }]}
+            }
+        ]}
         />
     );
 };
