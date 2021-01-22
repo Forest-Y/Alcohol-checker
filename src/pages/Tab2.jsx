@@ -6,12 +6,13 @@ import "react-dom"
 import ActionAlert from '../components/ActionAlert';
 import { add, mic, search } from 'ionicons/icons';
 import searchData from '../components/searchData';
-import SearchAlert from "../components/SerchAlert"
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition"
 
 const Tab2 = (props) => {
+  const { transcript } = useSpeechRecognition()
   const [showActionSheet, setShowActionSheet] = useState(false)
-  const [searchAlert, setSearchAlert] = useState(false)
   const [actionAlert, setActionAlert] = useState(false)
+  const [recordFlag, setRecordFlag] = useState(false)
   const [text, setText] = useState("")
   const allData = JSON.parse(localStorage.alcohol)
   const [data, setData] = useState(JSON.parse(localStorage.alcohol))
@@ -21,43 +22,29 @@ const Tab2 = (props) => {
     console.log(data)
     console.log(localStorage.key)
   }
-  const handleChange = (e) => {
+
+  const wordChange = (e) => {
     setText(e.target.value)
     console.log(e.target.value)
   }
-  const handleClick = () => {
+  const searchClick = () => {
     localStorage.searchWord = text
-    console.log("OK")
+    setRecordFlag(false)
     searchData(allData, setData)
   }
+
   const reset = () => {
     setText("")
     localStorage.searchWord = ""
     setData(JSON.parse(localStorage.alcohol))
   }
-  /*
-  function regist() {
+
+  const recordClick = () => {
+    setRecordFlag(true)
     SpeechRecognition.startListening()
-    console.log("OK")
-    return new Promise(() => {
-      SpeechRecognition.startListening()
-    })
-  }
-  async function speech() {
-    await SpeechRecognition.startListening()
-    localStorage.searchWord = transcript
-    searchData(allData, setData)
-    setText(transcript)
-    console.log("OK!")
     console.log(transcript)
+    setText(transcript)
   }
-  */
-  /*
-  localStorage.searchWord = transcript
-  searchData(allData, setData)
-  setText(transcript)
-  */
-  //const data = JSON.parse(localStorage.alcohol)
   return (
     <IonPage>
       <IonHeader>
@@ -77,15 +64,19 @@ const Tab2 = (props) => {
             <form className="ion-padding">
               <IonItem>
                 <IonButtons>
-                  <IonButton onClick={() => handleClick()} slot="start">
+                  <IonButton onClick={() => searchClick()} slot="start">
                     <IonIcon
                       slot="icon-only"
                       icon={search} />
                   </IonButton>
                 </IonButtons>
-                <IonInput type="text" value={text} placeholder="検索する酒を入力" onIonChange={handleChange}></IonInput>
+                {recordFlag === false ?
+                <IonInput type="text" value={text} placeholder="検索する酒を入力" onIonChange={wordChange}></IonInput>
+                :
+                <IonInput type="text" value={transcript} placeholder="検索する酒を入力" onIonChange={wordChange}></IonInput>
+                }
                 <IonButtons>
-                  <IonButton onClick={() => setSearchAlert(true)} slot="end">
+                  <IonButton onClick={() => recordClick()} slot="end">
                     <IonIcon
                       slot="icon-only"
                       icon={mic} />
@@ -112,9 +103,9 @@ const Tab2 = (props) => {
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
-        {searchAlert === true &&
+        {/*searchAlert === true &&
           <SearchAlert searchAlert = {searchAlert} setSearchAlert = {setSearchAlert} setData = {setData} />
-        }
+        */}
         <ActionSheet data={data} setShowActionSheet={setShowActionSheet} showActionSheet={showActionSheet} setData={setData} setRegistModal={props.setRegistModal} />
         <ActionAlert data={data} setActionAlert={setActionAlert} actionAlert={actionAlert} setData={setData} />
       </IonContent>
