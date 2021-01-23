@@ -32,7 +32,7 @@ const ActionSheet = (props) => {
                     localStorage.nowGram = localStorage.gram
                     console.log(localStorage.gram)
                     localStorage.time = new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds()
-                    localStorage.per = (localStorage.gram / (833 * localStorage.weight) * 100)
+                    //localStorage.per = (localStorage.gram / (833 * localStorage.weight) * 100)
                     props.setRegistModal(false)
                 }
             }]}

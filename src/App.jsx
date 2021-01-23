@@ -29,13 +29,6 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 const App = () => {
-  if(localStorage.gram === undefined){
-    localStorage.gram = 0
-    localStorage.per = 0
-    localStorage.state = "素面"
-    localStorage.time = 0
-    localStorage.alcohol = JSON.stringify({})
-  }
   return (
     <IonApp>
       <IonReactRouter>

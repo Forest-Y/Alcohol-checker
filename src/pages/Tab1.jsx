@@ -1,43 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { IonButtons, IonIcon, IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonModal, IonFab, IonFabButton,  } from '@ionic/react';
+import { IonButtons, IonIcon, IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonModal, IonFab, IonFabButton, IonAlert, } from '@ionic/react';
 import './Tab1.css';
-import { helpCircleOutline, add } from 'ionicons/icons';
+import { helpCircleOutline, add, build } from 'ionicons/icons';
 import judgeState from "../components/judgeState"
 import Explanation from "../components/explanation"
 import Tab2 from "./Tab2"
+import { useHistory } from 'react-router';
 
 const Tab1 = () => {
+  const history = useHistory()
   const [showModal, setShowModal] = useState(false)
   const [registModal, setRegistModal] = useState(false)
-  localStorage.weight = 50
+  let subHeader = ""
+  if (localStorage.weight !== undefined) {
+    subHeader = "現在の体重は" + localStorage.weight + "です。"
+  }
   judgeState()
   const [per, setPer] = useState(localStorage.per)
   const [gram, setGram] = useState(localStorage.gram)
-  /*
-  if (parseFloat(localStorage.gram) !== gram) {
-    setGram(parseFloat(localStorage.gram))
-    setPer(parseFloat(localStorage.per))
-  }
-  */
-  const reset = () => {
-    localStorage.per = parseFloat(0)
-    localStorage.gram = parseFloat(0)
-    localStorage.nowGram = parseFloat(0)
-    localStorage.state = "素面"
-    localStorage.time = 0
-    //localStorage.alcohol = JSON.stringify({})
-    setPer(0)
-    setGram(0)
-  }
-  //const [remainingTimeStr, setRemainingTimeStr] = useState("")
+  const [weightFlag, setWeightFlag] = useState(false)
   const minDisassenbly = localStorage.weight * 0.1 / 3600
   const remainingTime = gram / minDisassenbly
   const now = new Date()
   now.setSeconds(now.getSeconds() + remainingTime)
+  const reset = () => {
+    setWeightFlag(true)
+  }
+  //console.log(weight)
+  if (localStorage.gram === undefined) {
+    localStorage.gram = 0
+    localStorage.per = 0
+    localStorage.state = "素面"
+    localStorage.time = 0
+    localStorage.alcohol = JSON.stringify({})
+    setWeightFlag(true)
+  }
+  //console.log("${localStorage.weight}")
+  //const [remainingTimeStr, setRemainingTimeStr] = useState("")
   useEffect(() => {
     setInterval(() => {
       localStorage.gram = parseFloat(Math.max(0, parseFloat(localStorage.nowGram) - (minDisassenbly * (new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds() - localStorage.time))))
-      localStorage.per = parseFloat(localStorage.gram / (833 * 50) * 100)
+      localStorage.per = parseFloat(localStorage.gram / (833 * localStorage.weight) * 100)
       setGram(gram => localStorage.gram)
       setPer(per => localStorage.per)
     }, 1000);
@@ -47,7 +50,11 @@ const Tab1 = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle style={{ textAlign: "center" }}>飲酒状況</IonTitle>
-          <IonButton slot="end" onClick={() => { reset() }}>リセット</IonButton>
+          <IonButtons slot = "end">
+            <IonButton  onClick={() => { reset() }}>
+              <IonIcon slot="icon-only" icon={build} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -84,6 +91,29 @@ const Tab1 = () => {
           onDidDismiss={() => setRegistModal(false)}>
           <Tab2 setRegistModal={setRegistModal} />
         </IonModal>
+        <IonAlert
+          isOpen={weightFlag}
+          onDidDismiss={() => setWeightFlag(false)}
+          header="体重の設定"
+          subHeader={subHeader}
+          inputs={[{
+            name: "weight",
+            placeholder: "体重を入力",
+            type: "number"
+          }]}
+          buttons={[
+            {
+              text: "閉じる",
+              role: "cancel",
+            }, {
+              text: "決定",
+              handler: data => {
+                localStorage.weight = data.weight
+                history.go(0)
+              }
+            }
+          ]}
+        />
       </IonContent>
     </IonPage>
   );
