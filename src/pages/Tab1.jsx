@@ -5,53 +5,54 @@ import { helpCircleOutline, add, build } from 'ionicons/icons';
 import judgeState from "../components/judgeState"
 import Explanation from "../components/explanation"
 import Tab2 from "./Tab2"
-import { useHistory } from 'react-router';
 
 const Tab1 = () => {
-  const history = useHistory()
   const [showModal, setShowModal] = useState(false)
   const [registModal, setRegistModal] = useState(false)
   let subHeader = ""
-  if (localStorage.weight !== undefined) {
+  if (!isNaN(localStorage.weight)){
     subHeader = "現在の体重は" + localStorage.weight + "です。"
   }
   judgeState()
   const [per, setPer] = useState(localStorage.per)
   const [gram, setGram] = useState(localStorage.gram)
   const [weightFlag, setWeightFlag] = useState(false)
-  const minDisassenbly = localStorage.weight * 0.1 / 3600
-  const remainingTime = gram / minDisassenbly
   const now = new Date()
-  now.setSeconds(now.getSeconds() + remainingTime)
   const reset = () => {
     setWeightFlag(true)
   }
   //console.log(weight)
-  if (localStorage.gram === undefined) {
+  if (localStorage.weight === undefined) {
     localStorage.gram = 0
     localStorage.per = 0
     localStorage.state = "素面"
     localStorage.time = 0
+    localStorage.nowGram = 0
+    localStorage.searchWord = ""
+    //localStorage.weight = 50
     localStorage.alcohol = JSON.stringify({})
     setWeightFlag(true)
   }
-  //console.log("${localStorage.weight}")
-  //const [remainingTimeStr, setRemainingTimeStr] = useState("")
+  const minDisassenbly = localStorage.weight * 0.1 / 3600
+  const remainingTime = gram / minDisassenbly
+  now.setSeconds(now.getSeconds() + remainingTime)
   useEffect(() => {
+    clearInterval()
     setInterval(() => {
-      localStorage.gram = parseFloat(Math.max(0, parseFloat(localStorage.nowGram) - (minDisassenbly * (new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds() - localStorage.time))))
+      const disassenblyTime = localStorage.weight * 0.1 / 3600
+      localStorage.gram = parseFloat(Math.max(0, parseFloat(localStorage.nowGram) - (disassenblyTime * (new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds() - localStorage.time))))
+      setGram(gram => parseFloat(Math.max(0, parseFloat(localStorage.nowGram) - (disassenblyTime * (new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds() - localStorage.time)))))
       localStorage.per = parseFloat(localStorage.gram / (833 * localStorage.weight) * 100)
-      setGram(gram => localStorage.gram)
       setPer(per => localStorage.per)
     }, 1000);
-  }, [minDisassenbly])
+  }, [])
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle style={{ textAlign: "center" }}>飲酒状況</IonTitle>
-          <IonButtons slot = "end">
-            <IonButton  onClick={() => { reset() }}>
+          <IonButtons slot="end">
+            <IonButton onClick={() => { reset() }}>
               <IonIcon slot="icon-only" icon={build} />
             </IonButton>
           </IonButtons>
@@ -109,7 +110,7 @@ const Tab1 = () => {
               text: "決定",
               handler: data => {
                 localStorage.weight = data.weight
-                history.go(0)
+
               }
             }
           ]}

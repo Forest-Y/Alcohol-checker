@@ -19,8 +19,6 @@ const Tab2 = (props) => {
   const deleteButton = (data) => {
     localStorage.key = data[0]
     setShowActionSheet(true)
-    console.log(data)
-    console.log(localStorage.key)
   }
 
   const wordChange = (e) => {
