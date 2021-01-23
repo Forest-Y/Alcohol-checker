@@ -29,7 +29,7 @@ const Tab1 = () => {
     localStorage.time = 0
     localStorage.nowGram = 0
     localStorage.searchWord = ""
-    //localStorage.weight = 50
+    localStorage.weight = 50
     localStorage.alcohol = JSON.stringify({})
     setWeightFlag(true)
   }
@@ -37,11 +37,10 @@ const Tab1 = () => {
   const remainingTime = gram / minDisassenbly
   now.setSeconds(now.getSeconds() + remainingTime)
   useEffect(() => {
-    clearInterval()
     setInterval(() => {
       const disassenblyTime = localStorage.weight * 0.1 / 3600
-      localStorage.gram = parseFloat(Math.max(0, parseFloat(localStorage.nowGram) - (disassenblyTime * (new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds() - localStorage.time))))
-      setGram(gram => parseFloat(Math.max(0, parseFloat(localStorage.nowGram) - (disassenblyTime * (new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds() - localStorage.time)))))
+      localStorage.gram = parseFloat(Math.max(0, parseFloat(localStorage.gram) - (disassenblyTime )))
+      setGram(gram => localStorage.gram)
       localStorage.per = parseFloat(localStorage.gram / (833 * localStorage.weight) * 100)
       setPer(per => localStorage.per)
     }, 1000);
@@ -110,7 +109,6 @@ const Tab1 = () => {
               text: "決定",
               handler: data => {
                 localStorage.weight = data.weight
-
               }
             }
           ]}
