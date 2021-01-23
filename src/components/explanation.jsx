@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonButtons, IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonCard, IonCardTitle, IonCardContent, IonCardHeader, IonCardSubtitle } from '@ionic/react';
-import explanation from "../text/text.jsx"
+import explanation from "../data/text.jsx"
 const Explanation = (props) => {
   const text = explanation
   return (

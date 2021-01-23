@@ -4,6 +4,7 @@ import './Tab1.css';
 import { helpCircleOutline, add, build } from 'ionicons/icons';
 import judgeState from "../components/judgeState"
 import Explanation from "../components/explanation"
+import templateData from "../data/template"
 import Tab2 from "./Tab2"
 
 const Tab1 = () => {
@@ -21,7 +22,6 @@ const Tab1 = () => {
   const reset = () => {
     setWeightFlag(true)
   }
-  //console.log(weight)
   if (localStorage.weight === undefined) {
     localStorage.gram = 0
     localStorage.per = 0
@@ -30,7 +30,7 @@ const Tab1 = () => {
     localStorage.nowGram = 0
     localStorage.searchWord = ""
     localStorage.weight = 50
-    localStorage.alcohol = JSON.stringify({})
+    localStorage.alcohol = JSON.stringify(templateData)
     setWeightFlag(true)
   }
   const minDisassenbly = localStorage.weight * 0.1 / 3600
