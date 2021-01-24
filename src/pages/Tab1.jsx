@@ -109,6 +109,8 @@ const Tab1 = () => {
               text: "決定",
               handler: data => {
                 localStorage.weight = data.weight
+                localStorage.nowGram = localStorage.gram
+                localStorage.time = new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds()
               }
             }
           ]}
