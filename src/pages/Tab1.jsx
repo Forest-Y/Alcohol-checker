@@ -39,7 +39,7 @@ const Tab1 = () => {
   useEffect(() => {
     setInterval(() => {
       const disassenblyTime = localStorage.weight * 0.1 / 3600
-      localStorage.gram = parseFloat(Math.max(0, parseFloat(localStorage.gram) - (disassenblyTime )))
+      localStorage.gram = parseFloat(Math.max(0, parseFloat(localStorage.nowGram) - (disassenblyTime * (new Date().getHours() * 3600 + new Date().getMinutes() * 60 + new Date().getSeconds() - localStorage.time) )))
       setGram(gram => localStorage.gram)
       localStorage.per = parseFloat(localStorage.gram / (833 * localStorage.weight) * 100)
       setPer(per => localStorage.per)
