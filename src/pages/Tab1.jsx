@@ -22,7 +22,8 @@ const Tab1 = () => {
   const reset = () => {
     setWeightFlag(true)
   }
-  if (localStorage.weight === undefined) {
+  if (localStorage.start === undefined) {
+    localStorage.start = true
     localStorage.gram = 0
     localStorage.per = 0
     localStorage.state = "素面"
