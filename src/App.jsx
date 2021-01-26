@@ -6,7 +6,6 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
 //import Tab3 from './pages/Tab3';
 
 /* Core CSS required for Ionic components to work properly */
@@ -34,28 +33,8 @@ const App = () => {
       <IonReactRouter>
           <IonRouterOutlet>
             <Route path="/home" render = {() => <Tab1/>} exact={true} />
-            <Route path="/append" render = {() => <Tab2 />} />
-            {/*
-            <Route path="/history" component={Tab3} />
-            */}
-            <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
+            <Route path="/home?ion-input-0=" render={() => <Redirect to="/home" />} />
           </IonRouterOutlet>
-          {/*
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="tab1" href="/home">
-              <IonIcon icon={triangle} />
-             <IonLabel>摂取状況</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab2" href="/append">
-              <IonIcon icon={ellipse} />
-              <IonLabel>ドリンクの追加</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab3" href="/history">
-              <IonIcon icon={square} />
-              <IonLabel>履歴</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-          */}
       </IonReactRouter>
     </IonApp>
   )
