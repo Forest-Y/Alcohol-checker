@@ -58,30 +58,28 @@ const Tab2 = (props) => {
       </IonHeader>
       <IonContent fullscreen>
         {data.length !== 0 &&
-          <div>
-            <form className="ion-padding">
-              <IonItem>
-                <IonButtons>
-                  <IonButton onClick={() => searchClick()} slot="start">
-                    <IonIcon
-                      slot="icon-only"
-                      icon={search} />
-                  </IonButton>
-                </IonButtons>
-                {recordFlag === false ?
-                <IonInput type="text" value={text} placeholder="検索する酒を入力" onIonChange={wordChange}></IonInput>
-                :
-                <IonInput type="text" value={transcript} placeholder="検索する酒を入力" onIonChange={wordChange}></IonInput>
-                }
-                <IonButtons>
-                  <IonButton onClick={() => recordClick()} slot="end">
-                    <IonIcon
-                      slot="icon-only"
-                      icon={mic} />
-                  </IonButton>
-                </IonButtons>
-              </IonItem>
-            </form>
+          <div　className="ion-padding">
+            <IonItem>
+              <IonButtons>
+                <IonButton onClick={() => searchClick()} slot="start">
+                  <IonIcon
+                    slot="icon-only"
+                    icon={search} />
+                </IonButton>
+              </IonButtons>
+              {recordFlag === false ?
+              <IonInput value={text} required={true} placeholder="検索する酒を入力" onIonChange={wordChange}></IonInput>
+              :
+              <IonInput value={transcript} required={true} placeholder="検索する酒を入力" onIonChange={wordChange}></IonInput>
+              }
+              <IonButtons>
+                <IonButton onClick={() => recordClick()} slot="end">
+                  <IonIcon
+                    slot="icon-only"
+                    icon={mic} />
+                </IonButton>
+              </IonButtons>
+            </IonItem>
             {Object.entries(data).map((data) => {
               return (
                 <div key={data}>
